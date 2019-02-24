@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { BasketService } from 'src/app/services/basket.service';
 import { Basket } from 'src/app/models/basket.model';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/reducers';
+import { GetAllBaskets, GetBasket } from 'src/app/actions/basket.action';
 
 @Component({
   selector: 'app-basket',
@@ -9,20 +13,19 @@ import { Basket } from 'src/app/models/basket.model';
 })
 export class BasketComponent implements OnInit {
 
-  baskets: Basket[]
-  currentBasket: Basket
+  baskets$: Observable<Basket[]> = this.store$.select('baskets');
+  currentBasket$: Observable<Basket> = this.store$.select('currentBasket')
 
-  constructor(private basketService: BasketService) { }
+  constructor(
+    private store$: Store<AppState>
+  ) { }
 
   ngOnInit() {
-    this.basketService.getAllBaskets().subscribe(data => {
-      console.log(data)
-      this.baskets = data;
-    })
+    this.store$.dispatch(new GetAllBaskets());
   }
 
   setCurrentBasket(basket: Basket) {
-    this.currentBasket = basket;
+    this.store$.dispatch(new GetBasket(basket.id))
   }
 
 }

@@ -1,10 +1,10 @@
-<ng-container *ngIf="currentBasket; else elseTemplate">
+<ng-container *ngIf="currentBasket$ | async as currentBasket; else elseTemplate">
   <div class="basket__detail">
     <app-basket-detail [basket] = currentBasket ></app-basket-detail>
   </div>
 </ng-container>
 <ng-template #elseTemplate>
-    <div class="basket__item" *ngFor="let basket of baskets">
+    <div class="basket__item" *ngFor="let basket of (baskets$ | async)">
       <a (click)="setCurrentBasket(basket)">{{basket.name}}</a>
     </div>
 </ng-template>

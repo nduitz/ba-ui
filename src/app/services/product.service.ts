@@ -12,6 +12,15 @@ export class ProductService {
   constructor(private http: HttpClient) {
   }
 
+  createProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>("http://localhost:3000/products", product).pipe(
+      catchError(error => {
+        console.error('[Product]API Error', error)
+        return throwError(error);
+      })
+    )
+  }
+
   getAllProducts(): Observable<Product[]> {
     return this.http.get<Product[]>("http://localhost:3000/products").pipe(
       catchError(error => {

@@ -4,12 +4,10 @@
   width: 100%;
 
   // When grid is supported, let this handle the sizing of all Teasers
-  @supports (display: grid) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 15rem));
-    grid-auto-rows: min-content;
-    grid-gap: 2rem .25rem;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 15rem));
+  grid-auto-rows: min-content;
+  grid-gap: 2rem .25rem;
 }
 
 .teaser {

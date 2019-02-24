@@ -2,6 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/reducers';
+import { Observable } from 'rxjs';
+import { GetProduct } from 'src/app/actions/product.action';
 
 @Component({
   selector: 'app-product-detail',
@@ -10,14 +14,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductDetailComponent implements OnInit {
 
-  product: Product;
+  product$: Observable<Product> = this.store$.select('currentProduct');
 
-  constructor(private productService: ProductService,  private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private store$: Store<AppState>
+  ) { }
 
   ngOnInit() {
-    this.productService.getProduct(parseInt(this.route.snapshot.paramMap.get('id'))).subscribe(data => {
-      this.product = data
-    })
+    this.store$.dispatch(
+      new GetProduct(parseInt(this.route.snapshot.paramMap.get('id')))
+    )
   }
 
 }

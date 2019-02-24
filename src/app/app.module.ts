@@ -14,6 +14,14 @@ import { BasketDetailsComponent } from './components/basket-details/basket-detai
 import { BasketDetailComponent } from './components/basket-detail/basket-detail.component';
 import { BasketProductsListComponent } from './components/basket-products-list/basket-products-list.component';
 import { BasketProductComponent } from './components/basket-product/basket-product.component';
+import { environment } from 'src/environments/environment.prod';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers, metaReducers } from './reducers';
+import { ProductEffect } from './effects/product.effect';
+import { BasketEffect } from './effects/basket.effect';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,7 +40,11 @@ import { BasketProductComponent } from './components/basket-product/basket-produ
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    FormsModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([ProductEffect, BasketEffect]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
