@@ -1,0 +1,126 @@
+.teaser-grid {
+  margin: 0 auto 2rem;
+  max-width: 140vmin;
+  width: 100%;
+
+  // When grid is supported, let this handle the sizing of all Teasers
+  @supports (display: grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 15rem));
+    grid-auto-rows: min-content;
+    grid-gap: 2rem .25rem;
+  }
+}
+
+.teaser {
+  font-size: 1rem;
+  display: inline-block;
+  box-shadow: none;
+  background: rgba(0, 0, 0, 0);
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.2s ease-out;
+  position: relative;
+  margin: 0 .125em 2em;
+  width: calc(50% - 0.5em);
+
+
+  // Ignore Previous width, when grid is supported. 
+  @supports (display: grid) {
+    width: 100%;
+    margin: 0;
+  }
+
+  // Render Play Button over Teaser
+
+
+  &__image {
+    padding-bottom: 2em;
+
+    img {
+      width: 100%;
+      display: block;
+      transition: opacity 0.2s ease-out;
+    }
+  }
+
+  &__body {
+    padding: 0.5em 0.5em 0.75em;
+    position: absolute;
+    left: .25em;
+    right: .25em;
+    bottom: 1.125em;
+    color: #fff;
+  }
+
+  &__headline {
+    margin-bottom: 2rem;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+    @include fluid-size(font-size, 20em, 120em, 1.2em, 1.75em);
+    transition: all 0.3s ease-out;
+    transform: translateY(1.25em);
+  }
+
+  &__price {
+    margin-bottom: 4rem;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+    @include fluid-size(font-size, 20em, 120em, 1.2em, 1.75em);
+    transition: all 0.3s ease-out;
+    transform: translateY(1.25em);
+    color: black;
+  }
+
+  &__description {
+    opacity: 0.5;
+    margin: .75em 0 0 0;
+    transition: all 0.3s ease-out;
+    transform: translateY(1.25em);
+  }
+
+  &__cart {
+    display: block;
+
+    a{
+      text-decoration: none;
+      color: black;
+    }
+  }
+}
+
+// Apply these styles, when primary input can hover
+@media (hover: hover) and (pointer: fine) {
+  .teaser__image {
+    padding-bottom: 0;
+
+    &:after {
+    }
+  }
+
+  .teaser__description {
+    opacity: 0;
+  }
+
+  // This is what happens on hover
+  .teaser:hover {
+
+    &:after {
+      opacity: 1;
+    }
+
+    .teaser__image:after {
+      opacity: 1;
+    }
+
+    .teaser__image img {
+      opacity: 0.6;
+    }
+
+    .teaser__description {
+      opacity: 0.8;
+      margin-top: 0.325em;
+    }
+  }
+
+}

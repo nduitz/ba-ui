@@ -1,0 +1,9 @@
+<p>
+  {{basket.name}}
+</p>
+<p>
+  {{basket.sum.toFixed(2)}}€
+</p>
+<ul>
+  <app-basket-product *ngFor="let productPosition of basket.product_positions" [productPosition] = productPosition></app-basket-product>
+</ul>

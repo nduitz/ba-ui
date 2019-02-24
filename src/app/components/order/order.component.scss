@@ -1,0 +1,11 @@
+.order--container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  .basket {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+  }
+}
