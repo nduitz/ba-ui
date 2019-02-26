@@ -29,14 +29,11 @@ export class ProductListItemComponent implements OnInit {
   }
 
   addProductToBasket(){
-
-    console.log(this.form.value)
     const productPosition: ProductPosition = {
       product_id: this.product.id,
       basket_id: this.form.value.basketId,
       amount: this.form.value.amount
     }
-    console.log(productPosition)
     this.store$.dispatch(new AddProductToBasket(productPosition))
   }
 

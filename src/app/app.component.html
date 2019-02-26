@@ -1,2 +1,12 @@
-<a routerLink="/order">Produkte</a>
+<div class="nav">
+  <a routerLink="/order">Produkte</a>
+  <div class="switch--container">
+    <p>Rails</p>
+    <label class="switch">
+      <input (click)="toggleFeature()" type="checkbox">
+      <span class="slider round"></span>
+    </label>
+    <p>Holochain</p>
+  </div>
+</div>
 <router-outlet></router-outlet>

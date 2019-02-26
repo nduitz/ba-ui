@@ -22,6 +22,7 @@ import { reducers, metaReducers } from './reducers';
 import { ProductEffect } from './effects/product.effect';
 import { BasketEffect } from './effects/basket.effect';
 import { FormsModule } from '@angular/forms';
+import { FeatureEffect } from './effects/feature.effect';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { FormsModule } from '@angular/forms';
     AngularFontAwesomeModule,
     FormsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([ProductEffect, BasketEffect]),
+    EffectsModule.forRoot([ProductEffect, BasketEffect, FeatureEffect]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],

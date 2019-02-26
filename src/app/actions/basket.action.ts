@@ -1,5 +1,6 @@
 import { Basket } from '../models/basket.model';
 import { ProductPosition } from '../models/product-position.model';
+import { BasketState } from '../helpers/basket-state.enum';
 
 export const CREATE_BASKET = '[basket] create basket';
 export const CREATE_BASKET_SUCCESS = '[basket] create basket success';
@@ -40,7 +41,7 @@ export class CreateBasketError {
 export class GetAllBaskets {
   readonly type = GET_ALL_BASKETS;
 
-  constructor() {};
+  constructor(public payload: BasketState = BasketState.OPEN) {};
 }
 
 export class GetAllBasketsSuccess {

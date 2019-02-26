@@ -4,6 +4,10 @@
   </div>
 </ng-container>
 <ng-template #elseTemplate>
+    <div>
+        <a (click)="getBasketsWithState(0)">Offen</a>
+        <a (click)="getBasketsWithState(1)">Abschlossen</a>
+      </div>
     <div class="basket__item" *ngFor="let basket of (baskets$ | async)">
       <a (click)="setCurrentBasket(basket)">{{basket.name}}</a>
     </div>
