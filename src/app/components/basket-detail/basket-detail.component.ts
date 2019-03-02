@@ -19,7 +19,6 @@ export class BasketDetailComponent implements OnInit {
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
-    this.store$.dispatch(new GetBasket(this.basket.id));
   }
 
   resetCurrentBasket() {

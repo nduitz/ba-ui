@@ -23,7 +23,7 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit() {
     this.store$.dispatch(
-      new GetProduct(parseInt(this.route.snapshot.paramMap.get('id')))
+      new GetProduct(this.route.snapshot.paramMap.get('id'))
     )
   }
 

@@ -28,7 +28,7 @@ export class BasketService {
     );
   }
 
-  getBasket(basketId: number): Observable<Basket> {
+  getBasket(basketId: string): Observable<Basket> {
     return this.http.get<Basket>(`http://localhost:3000/baskets/${basketId}`).pipe(
       catchError(error => {
         console.error('[Basket]API Error:', error);
@@ -50,8 +50,21 @@ export class BasketService {
     console.log(product_position)
     return this.http.post<Basket>('http://localhost:3000/baskets/product/', product_position).pipe(
       catchError(error => {
-        console.log('[Basket]API Error:', error);
         return throwError(error);
+      })
+    )
+  }
+
+
+  getBasketHolo(basketId: string): Observable<any> {
+    const promise = connect("ws://localhost:8888")
+      .then(({ call }) => call('test-instance/pos/main/get_basket')({basket_addr: basketId}));
+    return from(promise).pipe(
+      map((data) => JSON.parse(data)["Ok"]),
+      tap((data) => {
+        if (!("Ok" in data)) {
+          throwError(new Error(data))
+        }
       })
     )
   }
@@ -62,31 +75,25 @@ export class BasketService {
     return from(promise).pipe(
       map((data) => JSON.parse(data)),
       tap((data) => {
-        console.log("undefined?",data)
         if (!("Ok" in data)) {
           throwError(new Error(data))
         }
       })
     )
-
-    // connect("ws://localhost:8888").then(
-    //   ({call, close}) => {
-    //     call('test-instance/pos/main/get_baskets')({product: {name: "", description: "", price: 0}}).then(data => {
-    //       console.log(data)
-    //     })
-    //   }
-    // )
-    // return of()
   }
 
   addToBasketHolo(product_position: ProductPosition): Observable<any> {
     let params = this.buildHoloParams(product_position);
-    return from(
-      connect("ws://localhost:8888").then(
-        ({call, close}) => {
-          call('test-instant/pos/get_baskets')(params)
+    console.log(params)
+    const promise = connect("ws://localhost:8888")
+      .then(({ call }) => call('test-instance/pos/main/add_product')(params));
+    return from(promise).pipe(
+      map((data) => JSON.parse(data)["Ok"]),
+      tap((data) => {
+        if (!("Ok" in data)) {
+          throwError(new Error(data))
         }
-      )
+      })
     )
   }
 
@@ -98,9 +105,12 @@ export class BasketService {
     delete product_position.products;
 
     return {
-      basket_addr: basket_addr,
       product_addr: product_addr,
-      product_position: product_position
+      basket_addr: basket_addr,
+      position: {
+        amount: product_position.amount,
+        timestamp: Date.now().toString()
+      }
     }
   }
 }

@@ -15,7 +15,10 @@ export class ProductListComponent implements OnInit {
 
   products$: Observable<Product[]> = this.store$.select('products');
 
-  constructor(private productService: ProductService, private store$: Store<AppState>) { }
+  constructor(
+    private productService: ProductService,
+    private store$: Store<AppState>
+  ) {}
 
   ngOnInit() {
     this.store$.dispatch(new GetAllProducts())

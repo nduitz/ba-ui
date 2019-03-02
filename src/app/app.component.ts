@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './reducers';
 import { ToggleFeature } from './actions/feature.action';
+import { GetAllBaskets } from './actions/basket.action';
+import { GetAllProducts } from './actions/product.action';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +21,8 @@ export class AppComponent {
 
   toggleFeature() {
     this.store$.dispatch(new ToggleFeature())
+    this.store$.dispatch(new GetAllBaskets())
+    this.store$.dispatch(new GetAllProducts())
   }
 }
 

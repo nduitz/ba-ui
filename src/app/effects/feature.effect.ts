@@ -16,7 +16,6 @@ export class FeatureEffect {
 
   @Effect()
   toggleFeature$ = this.actions$.pipe(
-    tap(data => console.log(data)),
     ofType<featureActions.ToggleFeature>(featureActions.TOGGLE_FEATURE),
     map(_ => {
       return new featureActions.ToggleFeatureSuccess(this.featureService.toggleFeature())

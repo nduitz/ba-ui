@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import * as basketActions from '../actions/basket.action';
-import {switchMap, map, catchError} from 'rxjs/operators';
+import {switchMap, map, catchError, tap} from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
@@ -34,31 +34,6 @@ export class BasketEffect {
   @Effect()
   getAllBaskets$ = this.actions$.pipe(
     ofType<basketActions.GetAllBaskets>(basketActions.GET_ALL_BASKETS),
-    /*
-    switchMap(action => {
-      if(this.featureService.getFeature() == Feature.HOLOCHAIN){
-        const x = this.basketService.getAllBasketsHolo().pipe(
-          map(data => {
-            data = JSON.parse(data)
-            if("Ok" in data){
-              return new basketActions.GetAllBasketsSuccess(data)
-            } else {
-              return new basketActions.GetAllBasketsError(new Error(data))
-            }
-          })
-        );
-        return x;
-      } else {
-        const x = this.basketService.getAllBaskets(action.payload).pipe(
-          map(data => {
-            return new basketActions.GetAllBasketsSuccess(data)
-          }),
-          catchError(error => of(new basketActions.GetAllBasketsError(error)))
-        );
-        return x;
-      }
-    }),
-    */
     switchMap(action =>
       this.featureService.getFeature() == Feature.HOLOCHAIN ?
         this.basketService.getAllBasketsHolo():
@@ -71,11 +46,19 @@ export class BasketEffect {
   @Effect()
   getBasket$ = this.actions$.pipe(
     ofType<basketActions.GetBasket>(basketActions.GET_BASKET),
-    switchMap(action => this.basketService.getBasket(action.payload).pipe(
-      map(data => {
-        return new basketActions.GetBasketSuccess(data)
-      }),
-      catchError(error => of(new basketActions.GetBasketError(error)))
+    switchMap(action => 
+      this.featureService.getFeature() == Feature.HOLOCHAIN ?
+      this.basketService.getBasketHolo(action.payload).pipe(
+        map(data => {
+          return new basketActions.GetBasketSuccess(data)
+        }),
+        catchError(error => of(new basketActions.GetBasketError(error)))
+      ):
+      this.basketService.getBasket(action.payload).pipe(
+        map(data => {
+          return new basketActions.GetBasketSuccess(data)
+        }),
+        catchError(error => of(new basketActions.GetBasketError(error)))
       )
     )
   )
@@ -83,26 +66,21 @@ export class BasketEffect {
   @Effect()
   addProductToBasket$ = this.actions$.pipe(
     ofType<basketActions.AddProductToBasket>(basketActions.ADD_PRODUCT_TO_BASKET),
-    switchMap(action => {
-      if(this.featureService.getFeature() == Feature.HOLOCHAIN){
+    tap(action => console.log(action.payload)),
+    switchMap(action => 
+      this.featureService.getFeature() == Feature.HOLOCHAIN ?
         this.basketService.addToBasketHolo(action.payload).pipe(
-          map(data => {
-            let dataJSON = JSON.parse(data)
-            if("Ok" in dataJSON){
-              return new basketActions.AddProductToBasketSuccess(dataJSON["Ok"])
-            } else {
-              return new basketActions.AddProductToBasketError(dataJSON)
-            }
-          })
-        )
-      } else {
-        return this.basketService.addToBasket(action.payload).pipe(
           map(data => {
             return new basketActions.AddProductToBasketSuccess(data)
           }),
           catchError(error => of(new basketActions.AddProductToBasketError(error)))
-        );
-      }
-    })
+        ):
+        this.basketService.addToBasket(action.payload).pipe(
+          map(data => {
+            return new basketActions.AddProductToBasketSuccess(data)
+          }),
+          catchError(error => of(new basketActions.AddProductToBasketError(error)))
+        )
+    )
   )
 }

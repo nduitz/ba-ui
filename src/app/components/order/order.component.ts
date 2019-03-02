@@ -48,7 +48,8 @@ export class OrderComponent implements OnInit {
     })
 
     baskets.forEach(basket =>{
-      delete basket["id"]
+      delete basket["id"];
+      basket.sum = 0.00;
     })
 
     let mockParams: HoloMockData = {

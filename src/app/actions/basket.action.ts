@@ -59,7 +59,7 @@ export class GetAllBasketsError {
 export class GetBasket {
   readonly type = GET_BASKET;
 
-  constructor(public payload: number) {};
+  constructor(public payload: string) {};
 }
 
 export class GetBasketSuccess {

@@ -51,7 +51,7 @@ export class GetAllProductsError {
 export class GetProduct {
   readonly type = GET_PRODUCT;
 
-  constructor(public payload: number) {};
+  constructor(public payload: string) {};
 }
 
 export class GetProductSuccess {
